@@ -7,7 +7,12 @@
     <link href="/static/style.css" rel="stylesheet">
 </head>
   <body>
-  <h1>Welcome {{ request.user }}</h1>
-  <a href="{%url 'logout' %}">Logout</a>
+    {% if request.user.is_anonymous %}
+    <h1>Welcome Guest</h1>
+    <a href={%url 'login' %}>Login or Signup</a>
+    {% else %}
+    <h1>Welcome {{ request.user }}</h1>
+    <a href={%url 'logout' %}>Logout</a>
+    {% endif %}
   </body>
 </html>
