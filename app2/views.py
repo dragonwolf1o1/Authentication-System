@@ -5,8 +5,6 @@ import time
 from django.contrib import messages
 # Create your views here.
 def index(request):
-    if request.user.is_anonymous:
-        return redirect('/login')
     return render(request,'index.html')
 
 def loginuser(request):
@@ -18,12 +16,13 @@ def loginuser(request):
             login(request,user)
             return redirect('/')
         else:
+            messages.error(request,"Please provide right credentials!")
             return redirect('login')
     return render(request,'login.html')
 
 def logoutuser(request):
     logout(request)
-    return render(request,'login.html')
+    return redirect('/')
 
 def register(request):
     if request.method=="POST":
@@ -47,6 +46,7 @@ def register(request):
         else:
             user_cre=User.objects.create_user(username,email,password)
             user_cre.save()
+            asa=messages.success(request,'User created successfully!')
             return redirect('login')
 
 
