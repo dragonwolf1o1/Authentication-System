@@ -13,6 +13,9 @@
       <header>Register User</header>
       <form action="" class="form" method="post">
         {% csrf_token %}
+        {% for message in messages %}
+        <h3 class="er">{{message}}</h3>
+        {% endfor %}
         <div class="input-box">
           <label>Username</label>
           <input name="username" type="text" placeholder="Enter  Username" required />
