@@ -6,7 +6,7 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     if request.user.is_anonymous:
-        return redirect('/register')
+        return redirect('/login')
     return render(request,'index.html')
 
 def loginuser(request):
@@ -31,8 +31,19 @@ def register(request):
         email=request.POST.get('email')
         password=request.POST.get('password')
         cpassword=request.POST.get('cpassword')
+        
         if password!=cpassword:
-            return HttpResponse("Password and Confirm pass is not equal:")
+            messages.error(request,"Password and Confirm password is not same!")
+            return redirect('register')
+        
+        elif User.objects.filter(username=username).exists():
+            messages.error(request,'This Username already used!')
+            return redirect('register')
+        
+        elif User.objects.filter(email=email).exists():
+            messages.error(request,'This email already used!')
+            return redirect('register')
+        
         else:
             user_cre=User.objects.create_user(username,email,password)
             user_cre.save()
